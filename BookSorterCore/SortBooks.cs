@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using AudioFileSorter.Model;
-using System.IO;
-using System.Security.Cryptography;
+﻿using HelpersCore;
+using ModelsCore.Models;
 
-namespace AudioFileSorter;
+namespace BookSorterCore;
 
 public class FileSorter
 {
@@ -13,17 +11,17 @@ public class FileSorter
     /// <param name="destination"></param>
     /// <param name="openAudibles"></param>
     /// <param name="source"></param>
-    public Task SortAudioFiles(string source, string destination, List<OpenAudible> openAudibles)
+    public Task SortAudioFiles(string source, string destination, List<OpenAudibleBookModel> openAudibles)
     {
         var progressCount = 0;
         var copyBooks = 0;
         openAudibles.ForEach(audioFile =>
         {
-            audioFile.Author = SanitizeFileName(audioFile.Author);
-            audioFile.SeriesName = SanitizeFileName(audioFile.SeriesName);
-            audioFile.SeriesSequence = SanitizeFileName(audioFile.SeriesSequence);
-            audioFile.ShortTitle = SanitizeFileName(audioFile.ShortTitle);
-            audioFile.Title = SanitizeFileName(audioFile.Title);
+            audioFile.Author = Helpers.SanitizeFileName(audioFile.Author);
+            audioFile.SeriesName = Helpers.SanitizeFileName(audioFile.SeriesName);
+            audioFile.SeriesSequence = Helpers.SanitizeFileName(audioFile.SeriesSequence);
+            audioFile.ShortTitle = Helpers.SanitizeFileName(audioFile.ShortTitle);
+            audioFile.Title = Helpers.SanitizeFileName(audioFile.Title);
             
             if (!string.IsNullOrEmpty(audioFile.Author))
             {
@@ -53,7 +51,7 @@ public class FileSorter
                     }
                     else
                     {
-                        if (!AreFilesSame(sourceFile, destinationFile))
+                        if (!Helpers.AreFilesSame(sourceFile, destinationFile))
                         {
                             File.Copy(sourceFile, destinationFile, true);
                             copyBooks += 1;
@@ -73,7 +71,7 @@ public class FileSorter
                     }
                     else
                     {
-                        if (!AreFilesSame(sourceFile, destinationFile))
+                        if (!Helpers.AreFilesSame(sourceFile, destinationFile))
                         {
                             File.Copy(sourceFile, destinationFile, true);
                             copyBooks += 1;
@@ -93,25 +91,5 @@ public class FileSorter
         return Task.CompletedTask;
     }
 
-    private static string SanitizeFileName(string fileName)
-    {
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var invalidCharsRemoved = new string(fileName
-            .Where(ch => !invalidChars.Contains(ch))
-            .ToArray());
-        invalidCharsRemoved = invalidCharsRemoved.TrimEnd('.', ' ');
-        return invalidCharsRemoved;
-    }
     
-    private static bool AreFilesSame(string filePath1, string filePath2)
-    {
-        var fileInfo1 = new FileInfo(filePath1);
-        var fileInfo2 = new FileInfo(filePath2);
-        if (fileInfo1.Length != fileInfo2.Length)
-        {
-            return false;
-        }
-
-        return true;
-    }
 }

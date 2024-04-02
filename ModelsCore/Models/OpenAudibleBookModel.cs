@@ -1,6 +1,6 @@
-﻿namespace AudioFileSorter.Model;
+﻿namespace ModelsCore.Models;
 
-public class OpenAudible
+public class OpenAudibleBookModel
 {
     public string? Key { get; set; }
     public string Title { get; set; }

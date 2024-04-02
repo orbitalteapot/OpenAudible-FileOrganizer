@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using AudioFileSorter;
+
+using BookSorterCore;
+using CsvCore;
 
 Console.WriteLine("OpenAudible Book Manager!");
 var fileSorter = new FileSorter();

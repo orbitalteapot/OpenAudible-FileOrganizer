@@ -1,21 +1,20 @@
-﻿using System.Collections;
-using System.Globalization;
-using AudioFileSorter.Model;
+﻿using System.Globalization;
 using CsvHelper;
-using CsvHelper.Configuration;
+using ModelsCore.Mapping;
+using ModelsCore.Models;
 
-namespace AudioFileSorter;
+namespace CsvCore;
 
 public class CsvParser
 {
-    public async Task<List<OpenAudible>> ParseDataCsv(string fullPath, CancellationToken token)
+    public async Task<List<OpenAudibleBookModel>> ParseDataCsv(string fullPath, CancellationToken token)
     {
         using var reader = new StreamReader(fullPath);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         try
         {
             csv.Context.RegisterClassMap<AudiobookMap>();
-            return await csv.GetRecordsAsync<OpenAudible>(token).ToListAsync(token);
+            return await csv.GetRecordsAsync<OpenAudibleBookModel>(token).ToListAsync(token);
         }
         finally
         {

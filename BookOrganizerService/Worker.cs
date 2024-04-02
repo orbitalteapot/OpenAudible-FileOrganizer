@@ -1,7 +1,8 @@
 using System.IO;
-using AudioFileSorter;
+using BookSorterCore;
+using CsvCore;
 
-namespace ManagerService;
+namespace BookOrganizerService;
 
 public class Worker(ILogger<Worker> logger) : BackgroundService
 {

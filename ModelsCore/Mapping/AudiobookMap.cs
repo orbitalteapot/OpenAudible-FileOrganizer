@@ -1,8 +1,9 @@
 ﻿using CsvHelper.Configuration;
+using ModelsCore.Models;
 
-namespace AudioFileSorter.Model;
+namespace ModelsCore.Mapping;
 
-public sealed class AudiobookMap : ClassMap<OpenAudible>
+public sealed class AudiobookMap : ClassMap<OpenAudibleBookModel>
 {
     public AudiobookMap()
     {
